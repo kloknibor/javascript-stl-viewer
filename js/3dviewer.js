@@ -3,24 +3,24 @@
  */
 
 // Printer bounding bx vars
-    var printerX = 196.61;
-    var printerY= 147.46;
-    var printerZ = 220;
+var printerX = 196.61;
+var printerY= 147.46;
+var printerZ = 220;
 
 // init scene
 var scene = new THREE.Scene();
 
 //camera
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-camera.position.set(0, 0, 10);
+camera.position.set(0, 0, 300);
 camera.lookAt(new THREE.Vector3(0,0,0));
 scene.add(camera)
 
-// movement controls
+// camera controls
 var controls = new THREE.TrackballControls( camera );
-controls.rotateSpeed = 1.0;
-controls.zoomSpeed = 1.2;
-controls.panSpeed = 1.0;
+controls.rotateSpeed = 10;
+controls.zoomSpeed = 5;
+controls.panSpeed = 2;
 controls.noZoom = false;
 controls.noPan = false;
 controls.staticMoving = true;
@@ -33,15 +33,28 @@ var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
-// create bounding box 3Dprinter
-var ColourBoundingBox = new THREE.LineBasicMaterial({ color: 0x0000ff });
-var BoundingBox = new THREE.Geometry();
-BoundingBox.vertices.push(new THREE.Vector3(-10, 0, 0));
-BoundingBox.vertices.push(new THREE.Vector3(0, 10, 0));
-BoundingBox.vertices.push(new THREE.Vector3(10, 0, 0));
-BoundingBox.vertices.push(new THREE.Vector3(-10, 0, 0));
-var line = new THREE.Line(BoundingBox, ColourBoundingBox);
-scene.add(line);
+
+ // create bounding box 3Dprinter
+ var ColourBoundingBox = new THREE.LineBasicMaterial({ color: 0x938A8A });
+ var BoundingBox = new THREE.Geometry();
+ BoundingBox.vertices.push(new THREE.Vector3(-printerX/2, -printerY/2, 0));
+ BoundingBox.vertices.push(new THREE.Vector3(printerX/2, -printerY/2, 0));
+ BoundingBox.vertices.push(new THREE.Vector3(printerX/2, printerY/2, 0));
+ BoundingBox.vertices.push(new THREE.Vector3(-printerX/2, printerY/2, 0));
+ BoundingBox.vertices.push(new THREE.Vector3(-printerX/2, -printerY/2, 0));
+ BoundingBox.vertices.push(new THREE.Vector3(-printerX/2, -printerY/2, printerZ));
+ BoundingBox.vertices.push(new THREE.Vector3(printerX/2, -printerY/2, printerZ));
+ BoundingBox.vertices.push(new THREE.Vector3(printerX/2, printerY/2, printerZ));
+ BoundingBox.vertices.push(new THREE.Vector3(-printerX/2, printerY/2, printerZ));
+ BoundingBox.vertices.push(new THREE.Vector3(-printerX/2, -printerY/2, printerZ));
+ BoundingBox.vertices.push(new THREE.Vector3(-printerX/2, printerY/2, printerZ));
+ BoundingBox.vertices.push(new THREE.Vector3(-printerX/2, printerY/2, 0));
+ BoundingBox.vertices.push(new THREE.Vector3(printerX/2, printerY/2, 0));
+ BoundingBox.vertices.push(new THREE.Vector3(printerX/2, printerY/2, printerZ));
+ BoundingBox.vertices.push(new THREE.Vector3(printerX/2, -printerY/2, printerZ));
+ BoundingBox.vertices.push(new THREE.Vector3(printerX/2, -printerY/2, 0));
+ var line = new THREE.Line(BoundingBox, ColourBoundingBox);
+ scene.add(line);
 
 
 // import stl into three.js
@@ -50,11 +63,11 @@ var loader = new THREE.STLLoader();
 
 // create object
 var object = new THREE.Object3D()
- loader.load( '../slotted_disk.stl', function ( geometry ) {
-     var material=new THREE.MeshLambertMaterial({ color: 0xfdd017 });
-     object = new THREE.Mesh(geometry, material);
-     scene.add(object);
-      });
+loader.load( '../stl/slotted_disk2.stl', function ( geometry ) {
+    var material=new THREE.MeshLambertMaterial({ color: 0xfdd017 });
+    object = new THREE.Mesh(geometry, material);
+    scene.add(object);
+});
 
 
 // lights
@@ -63,7 +76,6 @@ var directionalLight=new THREE.DirectionalLight(0xffffff, 1);
 directionalLight.position=camera.position;
 camera.add(directionalLight);
 
-// update view
 render();
 animate();
 light_update();
