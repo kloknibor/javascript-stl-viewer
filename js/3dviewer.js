@@ -4,7 +4,7 @@
 // main loop
 // init vars
     var counter = 0;
-    var line,BoundingBox,ColourBoundingBox,directionalLight,renderer,camera,scene,controls,windowWidth,windowHeight;
+    var line,BoundingBox,ColourBoundingBox,directionalLight,renderer,camera,scene,controls,windowWidth,windowHeight,controlWidth;
     var init = true;
 
 // run init loop
@@ -15,9 +15,10 @@
     counter += 1;
     console.log(counter)
 
+// listen for window resizing
+window.onresize = function(){onWindowResize()};
 render();
 animate();
-
 // init
 function init_func (){
     // Printer bounding bx vars
@@ -26,7 +27,7 @@ function init_func (){
     var printerZ = 220;
 
     // init vars
-    controlWidth = 200;
+    controlWidth = 220;
     windowWidth = window.innerWidth - controlWidth;
     windowHeight = window.innerHeight;
 
@@ -54,7 +55,7 @@ function init_func (){
 
     // init renderer
     renderer = new THREE.WebGLRenderer();
-    renderer.setSize( windowWidth, window.innerHeight );
+    renderer.setSize( windowWidth, windowHeight );
     document.body.appendChild( renderer.domElement );
 
     // lights
@@ -62,7 +63,6 @@ function init_func (){
     directionalLight=new THREE.DirectionalLight(0xffffff, 1);
     directionalLight.position=camera.position;
     camera.add(directionalLight);
-
 
     // create bounding box 3Dprinter
     ColourBoundingBox = new THREE.LineBasicMaterial({ color: 0x938A8A });
@@ -133,5 +133,20 @@ function render () {
 function animate() {
     requestAnimationFrame( animate );
     controls.update();
+}
+
+//run on window resize
+function onWindowResize(){
+    // just debugging
+    console.log("We resized the window :-)");
+
+    // calculate new window values
+    windowWidth = window.innerWidth - controlWidth;
+    windowHeight = window.innerHeight;
+
+    // set new vars
+    renderer.setSize(windowWidth, windowHeight);
+    camera.aspect = windowWidth / windowHeight;
+    camera.updateProjectionMatrix();
 }
 
