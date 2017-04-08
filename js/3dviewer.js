@@ -2,6 +2,11 @@
  * Created by Robin on 04/08/17.
  */
 
+// Printer bounding bx vars
+    var printerX = 196.61;
+    var printerY= 147.46;
+    var printerZ = 220;
+
 // init scene
 var scene = new THREE.Scene();
 
@@ -11,11 +16,11 @@ camera.position.set(0, 0, 10);
 camera.lookAt(new THREE.Vector3(0,0,0));
 scene.add(camera)
 
-// camera controls
+// movement controls
 var controls = new THREE.TrackballControls( camera );
 controls.rotateSpeed = 1.0;
 controls.zoomSpeed = 1.2;
-controls.panSpeed = 0.8;
+controls.panSpeed = 1.0;
 controls.noZoom = false;
 controls.noPan = false;
 controls.staticMoving = true;
@@ -27,6 +32,17 @@ controls.addEventListener( 'change', render );
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
+
+// create bounding box 3Dprinter
+var ColourBoundingBox = new THREE.LineBasicMaterial({ color: 0x0000ff });
+var BoundingBox = new THREE.Geometry();
+BoundingBox.vertices.push(new THREE.Vector3(-10, 0, 0));
+BoundingBox.vertices.push(new THREE.Vector3(0, 10, 0));
+BoundingBox.vertices.push(new THREE.Vector3(10, 0, 0));
+BoundingBox.vertices.push(new THREE.Vector3(-10, 0, 0));
+var line = new THREE.Line(BoundingBox, ColourBoundingBox);
+scene.add(line);
+
 
 // import stl into three.js
 // create loader
@@ -47,6 +63,7 @@ var directionalLight=new THREE.DirectionalLight(0xffffff, 1);
 directionalLight.position=camera.position;
 camera.add(directionalLight);
 
+// update view
 render();
 animate();
 light_update();
@@ -60,6 +77,7 @@ function render () {
     //object.rotation.x += 0.01;
 
     // render the scene ultimately
+    renderer.setClearColor (0xFCFCFC, 1);
     renderer.render(scene, camera);
 };
 
