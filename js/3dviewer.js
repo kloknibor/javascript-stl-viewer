@@ -4,7 +4,7 @@
 // main loop
 // init vars
     var counter = 0;
-    var line,BoundingBox,ColourBoundingBox,directionalLight,renderer,camera,scene,controls;
+    var line,BoundingBox,ColourBoundingBox,directionalLight,renderer,camera,scene,controls,windowWidth,windowHeight;
     var init = true;
 
 // run init loop
@@ -25,20 +25,25 @@ function init_func (){
     var printerY= 147.46;
     var printerZ = 220;
 
+    // init vars
+    controlWidth = 200;
+    windowWidth = window.innerWidth - controlWidth;
+    windowHeight = window.innerHeight;
+
     // init scene
     scene = new THREE.Scene();
 
     // camera
     // init camera
-    camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+    camera = new THREE.PerspectiveCamera( 75, windowWidth/windowHeight, 0.1, 1000 );
     camera.position.set(0, 0, 300);
     camera.lookAt(new THREE.Vector3(0,0,0));
     scene.add(camera);
 
     // camera controls
     controls = new THREE.TrackballControls( camera );
-    controls.rotateSpeed = 1.0;
-    controls.zoomSpeed = 1.2;
+    controls.rotateSpeed = 10;
+    controls.zoomSpeed = 3;
     controls.panSpeed = 0.8;
     controls.noZoom = false;
     controls.noPan = false;
@@ -49,7 +54,7 @@ function init_func (){
 
     // init renderer
     renderer = new THREE.WebGLRenderer();
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize( windowWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
 
     // lights
@@ -93,14 +98,12 @@ function import_stl (file_location) {
 
 // import stl into three.js
 // create object
-    /*
      var object = new THREE.Object3D()
      loader.load( '../stl/slotted_disk2.stl', function ( geometry ) {
      var material=new THREE.MeshLambertMaterial({ color: 0xfdd017 });
      object = new THREE.Mesh(geometry, material);
      scene.add(object);
      });
-     */
 
 // create object
     var object = new THREE.Object3D()

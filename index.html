@@ -2,14 +2,38 @@
 <head>
     <title>STL platform preparer</title>
     <style>
-        body { margin: 0; }
-        canvas { width: 100%; height: 100% }
+        body {
+            margin: 0;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+        #3dview {
+            width: calc(100% - 100px);
+        }
+
+        #controls {
+            float: right;
+            width: 300px;
+        }
     </style>
+
 </head>
 <body>
+
+<div id="3dview">
+
+</div>
+
+<div id="controls">
+
+</div>
+<!-- scripts -->
 <script src="js/three.js"></script>
 <script src="js/STLLoader.js"></script>
 <script src="js/TrackballControls.js"></script>
 <script src="js/3dviewer.js"></script>
+
 </body>
 </html>
