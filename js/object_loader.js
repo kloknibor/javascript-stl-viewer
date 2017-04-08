@@ -1,6 +1,8 @@
 // init scene
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+camera.position.set(0, 0, 30);
+camera.lookAt(new THREE.Vector3(0,0,0));
 
 // init renderer
 var renderer = new THREE.WebGLRenderer();
@@ -19,8 +21,15 @@ var material2 = new THREE.MeshBasicMaterial( { color: 0x001100 } );
 var cube2 = new THREE.Mesh( geometry2, material2 );
 scene.add( cube2 );
 
-// move camera away from the object to make it visable
-camera.position.z = 5;
+// define line
+var material_line = new THREE.LineBasicMaterial({ color: 0x0000ff });
+var geo_line = new THREE.Geometry();
+geo_line.vertices.push(new THREE.Vector3(-10, 0, 0));
+geo_line.vertices.push(new THREE.Vector3(0, 10, 0));
+geo_line.vertices.push(new THREE.Vector3(10, 0, 0));
+geo_line.vertices.push(new THREE.Vector3(-10, 0, 0));
+var line = new THREE.Line(geo_line, material_line);
+scene.add(line);
 
 // render the scene
 var render = function () {
