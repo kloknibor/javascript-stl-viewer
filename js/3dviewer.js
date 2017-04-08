@@ -1,6 +1,7 @@
 /**
  * Created by Robin on 04/08/17.
  */
+
 // init scene
 var scene = new THREE.Scene();
 
@@ -8,6 +9,7 @@ var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 camera.position.set(0, 0, 10);
 camera.lookAt(new THREE.Vector3(0,0,0));
+scene.add(camera)
 
 // camera controls
 var controls = new THREE.TrackballControls( camera );
@@ -21,49 +23,54 @@ controls.dynamicDampingFactor = 0.3;
 controls.keys = [ 65, 83, 68 ];
 controls.addEventListener( 'change', render );
 
-animate();
-
-// lights
-scene.add(new THREE.AmbientLight(0x736F6E));
-
 // init renderer
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
 // import stl into three.js
-
 // create loader
 var loader = new THREE.STLLoader();
 
 // create object
 var object = new THREE.Object3D()
  loader.load( '../slotted_disk.stl', function ( geometry ) {
-     var material=new THREE.MeshLambertMaterial({ ambient: 0xFBB917,color: 0xfdd017 });
+     var material=new THREE.MeshLambertMaterial({ color: 0xfdd017 });
      object = new THREE.Mesh(geometry, material);
      scene.add(object);
       });
 
+
 // lights
+scene.add(new THREE.AmbientLight(0x736F6E));
 var directionalLight=new THREE.DirectionalLight(0xffffff, 1);
 directionalLight.position=camera.position;
-scene.add(directionalLight);
+camera.add(directionalLight);
+
+render();
+animate();
+light_update();
 
 // render the scene
-var render = function () {
+function render () {
     //refresh at 60FPS
     requestAnimationFrame( render );
 
     // rotate object
-    object.rotation.x += 0.1;
+    //object.rotation.x += 0.01;
 
     // render the scene ultimately
     renderer.render(scene, camera);
 };
 
-render();
-
+// animate the controls
 function animate() {
     requestAnimationFrame( animate );
     controls.update();
+}
+
+// update light
+function light_update()
+{
+    directionalLight.position.copy( camera.position );
 }
