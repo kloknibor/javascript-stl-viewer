@@ -42,12 +42,9 @@ THREE.STLLoader.prototype = {
     constructor: THREE.STLLoader,
 
     load: function ( url, onLoad, onProgress, onError ) {
-        console.log("url" + url)
-        console.log("onLoad" + onLoad)
-        console.log("onProgress" + onProgress)
-        console.log("onError " + onError)
         var scope = this;
 
+        // comment this because we load the buffer directly
        // var loader = new THREE.FileLoader( scope.manager );
        // loader.setResponseType( 'arraybuffer' );
        // loader.load( url, function ( text ) {
@@ -60,9 +57,7 @@ THREE.STLLoader.prototype = {
     },
 
     parse: function ( data ) {
-        console.log (data);
-        console.log("dammit");
-        var isBinary = function () {
+         var isBinary = function () {
 
             var expect, face_size, n_faces, reader;
             reader = new DataView( binData );

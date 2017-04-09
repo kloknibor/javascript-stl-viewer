@@ -3,7 +3,7 @@
  */
 // main loop
 // init vars
-    var line,BoundingBox,ColourBoundingBox,directionalLight,renderer,camera,scene,controls,windowWidth,windowHeight,controlWidth;
+    var line,BoundingBox,ColourBoundingBox,directionalLight,renderer,camera,scene,controls,windowWidth,windowHeight,controlWidth,objectNr;
     var init = true;
 
 // run init loop
@@ -29,18 +29,18 @@ function init_func (){
     controlWidth = 220;
     windowWidth = window.innerWidth - controlWidth;
     windowHeight = window.innerHeight;
+    objectNr = 0;
 
     // init scene
     scene = new THREE.Scene();
 
     // camera
     // init camera
-    camera = new THREE.PerspectiveCamera( 45, windowWidth/windowHeight, 0.1, 1000 );
+    camera = new THREE.PerspectiveCamera( 40, windowWidth/windowHeight, 0.1, 1000 );
     camera.position.set(0, -355, 280);
     scene.add(camera);
 
     // camera controls
-
     controls = new THREE.TrackballControls( camera );
     controls.rotateSpeed = 20;
     controls.zoomSpeed = 3;
@@ -119,8 +119,7 @@ function init_func (){
             openFile(file);
         }, false);
     }, false);
-
-
+    console.log("Brought to you by kloknibor :)!")
 }
 
 // add part to canvas
@@ -129,10 +128,12 @@ function import_stl (file_location) {
     // create loader
     var loader = new THREE.STLLoader();
 
-// import stl into three.js
-// create object
+    // import stl into three.js
+    // create object
     var object = new THREE.Object3D()
     loader.load( file_location, function ( geometry ) {
+        objectNr += 1;
+        object.name = objectNr;
         var material=new THREE.MeshLambertMaterial({ color: 0xfdd017 });
         object = new THREE.Mesh(geometry, material);
         scene.add(object);
@@ -164,8 +165,6 @@ function animate() {
 function onWindowResize(){
     // just debugging
     console.log("We resized the window :-)");
-    console.log(camera.position);
-
 
     // calculate new window values
     windowWidth = window.innerWidth - controlWidth;
