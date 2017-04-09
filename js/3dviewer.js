@@ -17,6 +17,8 @@ window.onresize = function(){onWindowResize()};
 
 render();
 animate();
+rotate();
+translate();
 
 // init
 function init_func (){
@@ -126,14 +128,16 @@ function init_func (){
     // listen for removing part
     var input = document.getElementById("deletePart");
 
-    // if remove buttin is clicked then remove the part and entry
+    // if remove button is clicked then remove the part and entry
     input.addEventListener("click", function () {
         var selectedFile = document.getElementById("objectList");
         var fileNameToDelete = selectedFile.options[selectedFile.selectedIndex].text;
         var x = document.getElementById("objectList");
         x.remove(x.selectedIndex);
         deletePart(fileNameToDelete);
+        console.log("shit1")
     }, false);
+
 }
 
 // put name in interface and keep track of it
@@ -204,7 +208,78 @@ function onWindowResize(){
 
 // hide part
 function deletePart(partName){
-    console.log(scene);
     scene.remove(scene.getObjectByName(partName));
-    console.log(scene);
+}
+
+function rotate(){
+
+    // listen for removing part
+    var xRotate = document.getElementById("rotateXButton");
+    // if remove button is clicked then remove the part and entry
+    xRotate.addEventListener("click", function () {
+        var selectedFile = document.getElementById("objectList");
+        var objectToRotateName = selectedFile.options[selectedFile.selectedIndex].text;
+        var objectToRotate = scene.getObjectByName(objectToRotateName);
+        objectToRotate.rotation.x += document.getElementById("rotateX").value;;
+    }, false);
+
+    // listen for removing part
+    var yRotate = document.getElementById("rotateYButton");
+    // if remove button is clicked then remove the part and entry
+    yRotate.addEventListener("click", function () {
+        var selectedFile = document.getElementById("objectList");
+        var objectToRotateName = selectedFile.options[selectedFile.selectedIndex].text;
+        var objectToRotate = scene.getObjectByName(objectToRotateName);
+        objectToRotate.rotation.y += document.getElementById("rotateY").value;;
+    }, false);
+
+    // listen for removing part
+    var zRotate = document.getElementById("rotateZButton");
+    // if remove button is clicked then remove the part and entry
+    zRotate.addEventListener("click", function () {
+        var selectedFile = document.getElementById("objectList");
+        var objectToRotateName = selectedFile.options[selectedFile.selectedIndex].text;
+        var objectToRotate = scene.getObjectByName(objectToRotateName);
+        objectToRotate.rotation.z += document.getElementById("rotateZ").value;;
+    }, false);
+
+
+}
+
+function translate(){
+
+    // listen for removing part
+    var xTranslate = document.getElementById("translateXButton");
+    // if remove button is clicked then remove the part and entry
+    xTranslate.addEventListener("click", function () {
+        var selectedFile = document.getElementById("objectList");
+        var objectToTranslateName = selectedFile.options[selectedFile.selectedIndex].text;
+        var objectToTranslate = scene.getObjectByName(objectToTranslateName);
+        console.log(selectedFile);
+        console.log(objectToTranslateName);
+        console.log(objectToTranslate);
+        objectToTranslate.translateX(document.getElementById("translateX").value)
+    }, false);
+
+    // listen for removing part
+    var yTranslate = document.getElementById("translateYButton");
+    // if remove button is clicked then remove the part and entry
+    yTranslate.addEventListener("click", function () {
+        var selectedFile = document.getElementById("objectList");
+        var objectToTranslateName = selectedFile.options[selectedFile.selectedIndex].text;
+        var objectToTranslate = scene.getObjectByName(objectToTranslateName);
+        objectToTranslate.translateY(document.getElementById("translateY").value)
+    }, false);
+
+    // listen for removing part
+    var zTranslate = document.getElementById("translateZButton");
+    // if remove button is clicked then remove the part and entry
+    zTranslate.addEventListener("click", function () {
+        var selectedFile = document.getElementById("objectList");
+        var objectToTranslateName = selectedFile.options[selectedFile.selectedIndex].text;
+        var objectToTranslate = scene.getObjectByName(objectToTranslateName);
+        objectToTranslate.translateZ(document.getElementById("translateZ").value);
+    }, false);
+
+
 }
