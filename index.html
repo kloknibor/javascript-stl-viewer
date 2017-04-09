@@ -17,6 +17,12 @@
             float: right;
             width: 200px;
         }
+
+        #objectList {
+            overflow:auto;
+            width: 152px;
+        }
+
     </style>
 
 </head>
@@ -28,9 +34,36 @@
 
 <div id="controls">
     <!--select stl file: <input type="file" id="file" /> or drop stl file-->
-    select or drag and drop .stl here
-    <input type="file" id="file" />
+    select or drag and drop .stl here:
+    <p>
+        <input type="file" id="file" />
+    </p>
 
+    <p>
+    <select id="objectList" size="5">
+    </select>
+    </p>
+
+    <button id="deletePart">remove last added part</button>
+
+    <p id="rotate">
+        Rotate X :<br>
+        <input type="number" name="rotateX" style="width: 100px;"><button id="rotateXButton">rotate</button><br>
+        Rotate Y :<br>
+        <input type="number" name="rotateY" style="width: 100px;"><button id="rotateYButton">rotate</button><br>
+        Rotate Z :<br>
+        <input type="number" name="rotateZ" style="width: 100px;"><button id="rotateZButton">rotate</button><br>
+
+    </p>
+
+    <p id="translate">
+        Translate X :<br>
+        <input type="number" name="translateX" style="width: 100px;"><button id="translateXButton">translate</button><br>
+        Translate Y :<br>
+        <input type="number" name="translateY" style="width: 100px;"><button id="translateYButton">translate</button><br>
+        Translate Z :<br>
+        <input type="number" name="translateZ" style="width: 100px;"><button id="translateZButton">translate</button><br>
+    </p>
 
 </div>
 <!-- scripts -->

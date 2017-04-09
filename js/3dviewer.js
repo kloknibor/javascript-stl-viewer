@@ -25,11 +25,11 @@ function init_func (){
     var printerY= 147.46;
     var printerZ = 220;
 
+    objectNr = [0];
     // init vars
     controlWidth = 220;
     windowWidth = window.innerWidth - controlWidth;
     windowHeight = window.innerHeight;
-    objectNr = 0;
 
     // init scene
     scene = new THREE.Scene();
@@ -40,8 +40,13 @@ function init_func (){
     camera.position.set(0, -355, 280);
     scene.add(camera);
 
+    // init renderer
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize( windowWidth, windowHeight );
+    document.body.appendChild( renderer.domElement );
+
     // camera controls
-    controls = new THREE.TrackballControls( camera );
+    controls = new THREE.TrackballControls( camera, renderer.domElement );
     controls.rotateSpeed = 20;
     controls.zoomSpeed = 3;
     controls.panSpeed = 0.8;
@@ -53,12 +58,7 @@ function init_func (){
     controls.target = new THREE.Vector3(0, 0, 100);
     controls.addEventListener( 'change', render );
 
-    // init renderer
-    renderer = new THREE.WebGLRenderer();
-    renderer.setSize( windowWidth, windowHeight );
-    document.body.appendChild( renderer.domElement );
-
-    // lights
+     // lights
     scene.add(new THREE.AmbientLight(0x736F6E));
     directionalLight=new THREE.DirectionalLight(0xffffff, 1);
     directionalLight.position=camera.position;
@@ -84,6 +84,7 @@ function init_func (){
     BoundingBox.vertices.push(new THREE.Vector3(printerX/2, -printerY/2, printerZ));
     BoundingBox.vertices.push(new THREE.Vector3(printerX/2, -printerY/2, 0));
     line = new THREE.Line(BoundingBox, ColourBoundingBox);
+
     scene.add(line);
 
     // upload stl
@@ -94,9 +95,10 @@ function init_func (){
             var reader = new FileReader();
             reader.addEventListener("load", function (ev) {
                 var buffer = ev.target.result;
-                import_stl(buffer);
+                import_stl(buffer,file);
             }, false);
             reader.readAsArrayBuffer(file);
+            StlGui(file);
         };
 
         // file input button
@@ -119,27 +121,49 @@ function init_func (){
             openFile(file);
         }, false);
     }, false);
-    console.log("Brought to you by kloknibor :)!")
+    console.log("Brought to you by kloknibor :)!");
+
+    // listen for removing part
+    var input = document.getElementById("deletePart");
+
+    // if remove buttin is clicked then remove the part and entry
+    input.addEventListener("click", function () {
+        var selectedFile = document.getElementById("objectList");
+        var fileNameToDelete = selectedFile.options[selectedFile.selectedIndex].text;
+        var x = document.getElementById("objectList");
+        x.remove(x.selectedIndex);
+        deletePart(fileNameToDelete);
+    }, false);
 }
 
+// put name in interface and keep track of it
+function StlGui (file) {
+    var x = document.getElementById("objectList");
+    var option = document.createElement("option");
+    option.text = file.name;
+    x.add(option);
+}
+
+
 // add part to canvas
-function import_stl (file_location) {
+function import_stl (file_location,file) {
 
     // create loader
     var loader = new THREE.STLLoader();
 
     // import stl into three.js
     // create object
-    var object = new THREE.Object3D()
+    object = new THREE.Object3D();
     loader.load( file_location, function ( geometry ) {
-        objectNr += 1;
-        object.name = objectNr;
         var material=new THREE.MeshLambertMaterial({ color: 0xfdd017 });
-        object = new THREE.Mesh(geometry, material);
+        var object = new THREE.Mesh(geometry, material);
+        objectNr.push(object.id);
+        object.name = file.name;
         scene.add(object);
     });
 
 }
+
 
 // render the scene
 function render () {
@@ -170,9 +194,17 @@ function onWindowResize(){
     windowWidth = window.innerWidth - controlWidth;
     windowHeight = window.innerHeight;
 
+    console.log(scene);
+
     // set new vars
     renderer.setSize(windowWidth, windowHeight);
     camera.aspect = windowWidth / windowHeight;
     camera.updateProjectionMatrix();
 }
 
+// hide part
+function deletePart(partName){
+    console.log(scene);
+    scene.remove(scene.getObjectByName(partName));
+    console.log(scene);
+}
