@@ -35,12 +35,12 @@ function init_func (){
 
     // camera
     // init camera
-    camera = new THREE.PerspectiveCamera( 75, windowWidth/windowHeight, 0.1, 1000 );
-    camera.position.set(0, 0, 300);
-    camera.lookAt(new THREE.Vector3(0,0,0));
+    camera = new THREE.PerspectiveCamera( 45, windowWidth/windowHeight, 0.1, 1000 );
+    camera.position.set(0, -355, 280);
     scene.add(camera);
 
     // camera controls
+
     controls = new THREE.TrackballControls( camera );
     controls.rotateSpeed = 20;
     controls.zoomSpeed = 3;
@@ -50,6 +50,7 @@ function init_func (){
     controls.staticMoving = true;
     controls.dynamicDampingFactor = 0.3;
     controls.keys = [ 65, 83, 68 ];
+    controls.target = new THREE.Vector3(0, 0, 100);
     controls.addEventListener( 'change', render );
 
     // init renderer
@@ -163,6 +164,8 @@ function animate() {
 function onWindowResize(){
     // just debugging
     console.log("We resized the window :-)");
+    console.log(camera.position);
+
 
     // calculate new window values
     windowWidth = window.innerWidth - controlWidth;
