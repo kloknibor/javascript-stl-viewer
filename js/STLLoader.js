@@ -36,26 +36,32 @@ THREE.STLLoader = function ( manager ) {
 
 };
 
+
 THREE.STLLoader.prototype = {
 
     constructor: THREE.STLLoader,
 
     load: function ( url, onLoad, onProgress, onError ) {
-
+        console.log("url" + url)
+        console.log("onLoad" + onLoad)
+        console.log("onProgress" + onProgress)
+        console.log("onError " + onError)
         var scope = this;
 
-        var loader = new THREE.FileLoader( scope.manager );
-        loader.setResponseType( 'arraybuffer' );
-        loader.load( url, function ( text ) {
+       // var loader = new THREE.FileLoader( scope.manager );
+       // loader.setResponseType( 'arraybuffer' );
+       // loader.load( url, function ( text ) {
 
-            onLoad( scope.parse( text ) );
+           // onLoad( scope.parse( text ) );
+            onLoad( scope.parse( url ) );
 
-        }, onProgress, onError );
+        //}, onProgress, onError );
 
     },
 
     parse: function ( data ) {
-
+        console.log (data);
+        console.log("dammit");
         var isBinary = function () {
 
             var expect, face_size, n_faces, reader;
