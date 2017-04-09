@@ -18,53 +18,6 @@ window.onresize = function(){onWindowResize()};
 render();
 animate();
 
-window.addEventListener("load", function () {
-    "use strict";
-    // file load
-    var openFile = function (file) {
-        var reader = new FileReader();
-        reader.addEventListener("load", function (ev) {
-            var buffer = ev.target.result;
-            import_stl(buffer);
-            }, false);
-        reader.readAsArrayBuffer(file);
-    };
-
-    // file input button
-    var input = document.getElementById("file");
-    input.addEventListener("change", function (ev) {
-        var file = ev.target.files[0];
-        openFile(file);
-    }, false);
-
-    // dnd
-    window.addEventListener("dragover", function (ev) {
-        ev.stopPropagation();
-        ev.preventDefault();
-        ev.dataTransfer.dropEffect = "copy";
-    }, false);
-    window.addEventListener("drop", function (ev) {
-        ev.stopPropagation();
-        ev.preventDefault();
-        var file = ev.dataTransfer.files[0];
-        openFile(file);
-    }, false);
-}, false);
-/*
-// dnd
-window.addEventListener("dragover", function (ev) {
-    ev.stopPropagation();
-    ev.preventDefault();
-    ev.dataTransfer.dropEffect = "copy";
-}, false);
-
-window.addEventListener("drop", function (ev) {
-    ev.stopPropagation();
-    ev.preventDefault();
-    var file = ev.dataTransfer.files[0];
-    import_stl(file);
-}, false);
-*/
 // init
 function init_func (){
     // Printer bounding bx vars
@@ -132,7 +85,40 @@ function init_func (){
     line = new THREE.Line(BoundingBox, ColourBoundingBox);
     scene.add(line);
 
-    //import_stl('../stl/slotted_disk3.stl');
+    // upload stl
+    window.addEventListener("load", function () {
+        "use strict";
+        // file load
+        var openFile = function (file) {
+            var reader = new FileReader();
+            reader.addEventListener("load", function (ev) {
+                var buffer = ev.target.result;
+                import_stl(buffer);
+            }, false);
+            reader.readAsArrayBuffer(file);
+        };
+
+        // file input button
+        var input = document.getElementById("file");
+        input.addEventListener("change", function (ev) {
+            var file = ev.target.files[0];
+            openFile(file);
+        }, false);
+
+        // dnd
+        window.addEventListener("dragover", function (ev) {
+            ev.stopPropagation();
+            ev.preventDefault();
+            ev.dataTransfer.dropEffect = "copy";
+        }, false);
+        window.addEventListener("drop", function (ev) {
+            ev.stopPropagation();
+            ev.preventDefault();
+            var file = ev.dataTransfer.files[0];
+            openFile(file);
+        }, false);
+    }, false);
+
 
 }
 
@@ -143,16 +129,6 @@ function import_stl (file_location) {
     var loader = new THREE.STLLoader();
 
 // import stl into three.js
-// create object
-    /*
-     var object = new THREE.Object3D()
-     loader.load( '../stl/slotted_disk2.stl', function ( geometry ) {
-     var material=new THREE.MeshLambertMaterial({ color: 0xfdd017 });
-     object = new THREE.Mesh(geometry, material);
-     scene.add(object);
-     });
-*/
-
 // create object
     var object = new THREE.Object3D()
     loader.load( file_location, function ( geometry ) {
